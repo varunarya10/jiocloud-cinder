@@ -38,6 +38,13 @@ class cinder (
   $qpid_heartbeat              = 60,
   $qpid_protocol               = 'tcp',
   $qpid_tcp_nodelay            = true,
+  $rpc_zmq_bind_address = '*',
+  $rpc_zmq_contexts     = '1',
+  $rpc_zmq_host = $hostname,
+  $rpc_zmq_ipc_dir      = '/var/run/openstack',
+  $rpc_zmq_matchmaker   = 'nova.openstack.common.rpc.matchmaker_ring.MatchMakerRing',
+  $matchmaker_ringfile  = '/etc/nova/matchmaker.json',
+  $rpc_zmq_port         = '9501',
   $package_ensure              = 'present',
   $api_paste_config            = '/etc/cinder/api-paste.ini',
   $use_syslog                  = false,
@@ -99,6 +106,20 @@ class cinder (
       cinder_config { 'DEFAULT/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
       cinder_config { 'DEFAULT/rabbit_ha_queues': value => false }
     }
+  }
+
+  if $rpc_backend == 'cinder.openstack.common.rpc.impl_zmq' {
+    require '::zeromq'
+    cinder_config {
+        'DEFAULT/rpc_zmq_bind_address':         value => $rpc_zmq_bind_address;
+        'DEFAULT/rpc_zmq_contexts':             value => $rpc_zmq_contexts;
+        'DEFAULT/rpc_zmq_host':                 value => $rpc_zmq_host;
+        'DEFAULT/rpc_zmq_ipc_dir':              value => $rpc_zmq_ipc_dir;
+        'DEFAULT/rpc_zmq_matchmaker':           value => $rpc_zmq_matchmaker;
+        'DEFAULT/matchmaker_ringfile':          value => $matchmaker_ringfile;
+        'DEFAULT/rpc_zmq_port':                 value => $rpc_zmq_port;
+    }
+
   }
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' {
