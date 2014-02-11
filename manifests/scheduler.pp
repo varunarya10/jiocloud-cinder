@@ -38,6 +38,6 @@ class cinder::scheduler (
     name      => $::cinder::params::scheduler_service,
     enable    => $enabled,
     hasstatus => true,
-    require   => Package['cinder'],
+  #  require   => Package['cinder'],
   }
 }
