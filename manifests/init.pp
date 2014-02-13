@@ -42,7 +42,7 @@ class cinder (
   $rpc_zmq_contexts     = '1',
   $rpc_zmq_host = $hostname,
   $rpc_zmq_ipc_dir      = '/var/run/openstack',
-  $rpc_zmq_matchmaker   = 'nova.openstack.common.rpc.matchmaker_ring.MatchMakerRing',
+  $rpc_zmq_matchmaker   = 'cinder.openstack.common.rpc.matchmaker.MatchMakerRing',
   $matchmaker_ringfile  = '/etc/nova/matchmaker.json',
   $rpc_zmq_port         = '9501',
   $package_ensure              = 'present',
@@ -109,7 +109,6 @@ class cinder (
   }
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_zmq' {
-    require '::zeromq'
     cinder_config {
         'DEFAULT/rpc_zmq_bind_address':         value => $rpc_zmq_bind_address;
         'DEFAULT/rpc_zmq_contexts':             value => $rpc_zmq_contexts;
@@ -118,6 +117,7 @@ class cinder (
         'DEFAULT/rpc_zmq_matchmaker':           value => $rpc_zmq_matchmaker;
         'DEFAULT/matchmaker_ringfile':          value => $matchmaker_ringfile;
         'DEFAULT/rpc_zmq_port':                 value => $rpc_zmq_port;
+#    require => Service['nova-rpc-zmq-receiver']
     }
 
   }
