@@ -51,6 +51,7 @@ class cinder::keystone::auth (
   $admin_address      = '127.0.0.1',
   $internal_address   = '127.0.0.1',
   $port               = '8776',
+#  $port               = '80',
   $volume_version     = 'v1',
   $region             = 'RegionOne',
   $public_protocol    = 'http'
