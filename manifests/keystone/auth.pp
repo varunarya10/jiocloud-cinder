@@ -79,8 +79,8 @@ class cinder::keystone::auth (
     keystone_endpoint { "${region}/${auth_name}":
       ensure       => present,
       public_url   => "${public_protocol}://${public_address}:${port}/${volume_version}/%(tenant_id)s",
-      admin_url    => "http://${admin_address}:${port}/${volume_version}/%(tenant_id)s",
-      internal_url => "http://${internal_address}:${port}/${volume_version}/%(tenant_id)s",
+      admin_url    => "${public_protocol}://${admin_address}:${port}/${volume_version}/%(tenant_id)s",
+      internal_url => "${public_protocol}://${internal_address}:${port}/${volume_version}/%(tenant_id)s",
     }
   }
 }
