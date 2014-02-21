@@ -75,6 +75,7 @@ class cinder::api (
   $service_port               = '5000',
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
+  $bind_port		      = 8776,
   $enabled                    = true,
   $ratelimits                 = undef,
   $ratelimits_factory =
@@ -122,7 +123,8 @@ class cinder::api (
   }
 
   cinder_config {
-    'DEFAULT/osapi_volume_listen': value => $bind_host
+    'DEFAULT/osapi_volume_listen': value => $bind_host;
+    'DEFAULT/osapi_volume_listen_port': value => $bind_port;
   }
 
   if $keystone_auth_uri {
