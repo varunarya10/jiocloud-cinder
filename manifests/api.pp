@@ -76,6 +76,8 @@ class cinder::api (
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
   $bind_port		      = 8776,
+  $glance_host		      = 'localhost',
+  $glance_port		      = 9292,
   $enabled                    = true,
   $ratelimits                 = undef,
   $ratelimits_factory =
@@ -126,6 +128,14 @@ class cinder::api (
     'DEFAULT/osapi_volume_listen': value => $bind_host;
     'DEFAULT/osapi_volume_listen_port': value => $bind_port;
   }
+  
+  if $glance_host {
+	cinder_config { 'DEFAULT/glance_host': value => $glance_host; }
+  }
+ 
+  if $glance_port {
+	cinder_config { 'DEFAULT/glance_port': value => $glance_port; }
+  }  
 
   if $keystone_auth_uri {
     cinder_api_paste_ini { 'filter:authtoken/auth_uri': value => $keystone_auth_uri; }
